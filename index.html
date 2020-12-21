@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Payment Tip</title>
+</head>
+<body>
+    <main id="container" >
+        <h1>Payment Tip</h1>
+        <section>
+            <div class="bill">
+                <label for="myBill">Bill</label>
+                <input type="number" placeholder="mybill" id="myBill" >
+            </div>
+            <div>
+                <div class="spacebet">
+                    <label for="tipinput">Select tip</label>
+                    <span id="tippercent"></span>
+                </div>
+                <input type="range" id="tipinput" value="0" class="range">
+            </div>
+            <div class="spacebet">
+                <span>Tip</span>
+                <span id="tipValue"></span>
+            </div>
+            <hr>
+            <div class="spacebet total">
+                <span>Total</span>
+                <span id="totalwithTip"></span>
+            </div>
+        </section>
+        <section>
+            <div>
+                <div class="spacebet">
+                    <label for="split">Split</label>
+                    <span id="tipnum"></span>
+                </div>
+                <input type="range" id="tiptots" min="1" max="50" value="1"  class="range">
+            </div>
+            <div class="spacebet">
+                <span>Bill Each</span>
+                <span id ="billEach"></span>
+            </div>
+            <div class="spacebet">
+                <span>Tip Each</span>
+                <span id="tipEach"></span>
+            </div>
+
+        </section>
+    </main>
+    <script>
+        function formatMoney(value) {
+            value = Math.ceil(value * 100)/ 100; // a maths function that rounds up to give a finite bill each
+            value = value.toFixed(2) // round up the sum to two decimal place
+            return "$ " + value;
+        }
+        function formatSplit(value) {
+            if (value === "1") return value + " person";
+            //when the value of bills of equal to one person or split into the inputted people
+
+            return value + " people";
+        }
+        function update() {
+            let bill = Number(document.getElementById('myBill').value);
+            let tippercent = document.getElementById('tipinput').value;
+            let Split= document.getElementById('tiptots').value;
+
+            let tipValue = bill * (tippercent/100);
+            let tipEach = tipValue / Split
+            let newBillEach = (bill + tipValue) / Split;
+            
+            document.getElementById("tippercent").innerHTML = tippercent + "%";
+            document.getElementById("tipValue").innerHTML = formatMoney(tipValue);
+            document.getElementById("totalwithTip").innerHTML = formatMoney(bill + tipValue);
+            document.getElementById("tipnum").innerHTML = formatSplit(Split);
+            document.getElementById("billEach").innerHTML = formatMoney(newBillEach);
+            document.getElementById("tipEach").innerHTML = formatMoney(tipEach);
+
+
+        }
+        let container = document.getElementById('container');
+        container.addEventListener('input', update);
+    </script>
+    
+</body>
+</html>
